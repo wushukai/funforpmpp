@@ -54,7 +54,7 @@ void vectorAdd(float *a_h, float *b_h, float *c_h, int n) {
     vecAddKernel<<<blocks, threadsPerBlock>>>(a_d, b_d, c_d, n);
 
 
-    err = cudaMemcpy(c_d, c_h, size, cudaMemcpyDeviceToHost);
+    err = cudaMemcpy(c_h, c_d, size, cudaMemcpyDeviceToHost);
     if (err != cudaSuccess) {
         printf("Failed to copy data from host to device for c_d: %s\n", cudaGetErrorString(err));
         exit(EXIT_FAILURE);
@@ -69,6 +69,6 @@ void vectorAdd(float *a_h, float *b_h, float *c_h, int n) {
 int main() {
     int n = 1024;
     float a_h[n], b_h[n], c_h[n];
-    vector_add(a_h, b_h, c_h, n);
+    vectorAdd(a_h, b_h, c_h, n);
     return 0;
 }
