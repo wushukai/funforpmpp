@@ -69,6 +69,10 @@ void vectorAdd(float *a_h, float *b_h, float *c_h, int n) {
 int main() {
     int n = 1024;
     float a_h[n], b_h[n], c_h[n];
+    for (int i = 0; i < n; i++) {
+        a_h[i] = i;
+        b_h[i] = i;
+    }
     vectorAdd(a_h, b_h, c_h, n);
     for (int i = 0; i < n; i++) {
         printf("%f + %f = %f\n", a_h[i], b_h[i], c_h[i]);
