@@ -18,8 +18,8 @@ void matmulKernel(float *x, float *y, float *p, int width) {
     float pValue = 0;
 
     for (int k = 0; k < K; k++) {
-        sx[threadIdx.y][threadIdx.x] = x[row+threadIdx.y][k*TILE_WIDTH+threadIdx.x];
-        sy[threadIdx.y][threadIdx.x] = y[k*TILE_WIDTH+threadIdx.y][col+threadIdx.x];
+        sx[threadIdx.y][threadIdx.x] = x[(row+threadIdx.y)*width+k*TILE_WIDTH+threadIdx.x];
+        sy[threadIdx.y][threadIdx.x] = y[(k*TILE_WIDTH+threadIdx.y)*width+col+threadIdx.x];
         __syncthreads();
 
         for (int i = 0; i < TILE_WIDTH; i++) {
