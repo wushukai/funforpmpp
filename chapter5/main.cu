@@ -29,6 +29,8 @@ void matmulKernel(float *x, float *y, float *p, int width) {
         __syncthreads();
     }
 
+    printf("pValue: %f\n", pValue);
+
     p[row * width + col] = pValue;
 }
 
