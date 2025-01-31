@@ -94,7 +94,7 @@ int main() {
         a_h[i] = i;
         b_h[i] = i;
     }
-    matmul(a_h, b_h, c_h, n);
+    matmul(a_h, b_h, c_h, 8);
     for (int i = 0; i < n; i++) {
         printf("%f ", c_h[i]);
     }
