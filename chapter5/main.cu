@@ -18,8 +18,8 @@ void matmulKernel(float *x, float *y, float *p, int width) {
     float pValue = 0;
 
     for (int k = 0; k < K; k++) {
-        sx[threadIdx.y][threadIdx.x] = x[(row+threadIdx.y)*width+k*TILE_WIDTH+threadIdx.x];
-        sy[threadIdx.y][threadIdx.x] = y[(k*TILE_WIDTH+threadIdx.y)*width+col+threadIdx.x];
+        sx[threadIdx.y][threadIdx.x] = x[row*width+k*TILE_WIDTH+threadIdx.x];
+        sy[threadIdx.y][threadIdx.x] = y[(k*TILE_WIDTH+threadIdx.y)*width+col];
         __syncthreads();
 
         for (int i = 0; i < TILE_WIDTH; i++) {
@@ -29,9 +29,7 @@ void matmulKernel(float *x, float *y, float *p, int width) {
         __syncthreads();
     }
 
-    printf("pValue: %f\n", pValue);
-
-    p[row * width + col] = pValue;
+    p[row * width + col] = 1.0;
 }
 
 void matmul(float *a_h, float *b_h, float *c_h, int width) {
@@ -75,6 +73,20 @@ void matmul(float *a_h, float *b_h, float *c_h, int width) {
     dim3 threadsPerBlock(TILE_WIDTH, TILE_WIDTH);
     dim3 blocks((width + TILE_WIDTH - 1) / TILE_WIDTH, (width + TILE_WIDTH - 1) / TILE_WIDTH);
     matmulKernel<<<blocks, threadsPerBlock>>>(a_d, b_d, c_d, width);
+
+    // Check for errors on kernel launch
+    err = cudaGetLastError();
+    if (err != cudaSuccess) {
+        printf("Kernel launch failed: %s\n", cudaGetErrorString(err));
+        exit(EXIT_FAILURE);
+    }
+
+    // Check for any errors while waiting for kernel to finish
+    err = cudaDeviceSynchronize();
+    if (err != cudaSuccess) {
+        printf("Kernel execution failed: %s\n", cudaGetErrorString(err));
+        exit(EXIT_FAILURE);
+    }
 
 
     err = cudaMemcpy(c_h, c_d, size, cudaMemcpyDeviceToHost);
