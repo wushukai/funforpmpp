@@ -22,7 +22,7 @@ void prefix_sum_kernel(const float *data, float *result, int n) {
         __syncthreads();
 
         if (tid < stride) {
-            continue
+            continue;
         }
 
         write_buffer[tid] = read_buffer[tid] + read_buffer[tid - stride];
