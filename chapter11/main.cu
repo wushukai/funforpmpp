@@ -47,7 +47,7 @@ int calc_prefix_sum(const float *data, float *result, int n) {
     prefix_sum_kernel<<<1, 32>>>(d_data, d_result, n);
 
     // Check for any errors while waiting for kernel to finish
-    err = cudaDeviceSynchronize();
+    cudaError_t err = cudaDeviceSynchronize();
     if (err != cudaSuccess) {
         printf("Kernel execution failed: %s\n", cudaGetErrorString(err));
         exit(EXIT_FAILURE);
