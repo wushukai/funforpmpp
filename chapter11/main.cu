@@ -33,7 +33,9 @@ void prefix_sum_kernel(const float *data, float *result, int n) {
 
     __syncthreads();
 
-    result[tid] = read_buffer[tid];
+    if (tid < n) {
+        result[tid] = read_buffer[tid];
+    }
 }
 
 int calc_prefix_sum(const float *data, float *result, int n) {
