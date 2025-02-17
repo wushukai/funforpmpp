@@ -53,6 +53,8 @@ int calc_prefix_sum(const float *data, float *result, int n) {
         exit(EXIT_FAILURE);
     }
 
+    // copy data from device to host
+    printf("Copying data from device to host\n");
     err = cudaMemcpy(result, d_result, n * sizeof(float), cudaMemcpyDeviceToHost);
     if (err != cudaSuccess) {
         printf("Failed to copy data from device to host for d_result: %s\n", cudaGetErrorString(err));
@@ -61,6 +63,7 @@ int calc_prefix_sum(const float *data, float *result, int n) {
 
     cudaFree(d_data);
     cudaFree(d_result);
+    return 0;
 }
 
 int main() {
@@ -71,6 +74,7 @@ int main() {
     float result[sizeof(data)/sizeof(data[0])];
 
     int r = calc_prefix_sum(data, result, sizeof(data)/sizeof(data[0]));
+    printf("Result: ");
     for (int i = 0; i < sizeof(data)/sizeof(data[0]); i++) {
         printf("%f ", result[i]);
     }
