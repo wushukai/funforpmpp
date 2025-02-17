@@ -53,7 +53,7 @@ int calc_prefix_sum(const float *data, float *result, int n) {
         exit(EXIT_FAILURE);
     }
 
-    err = cudaMemcpy(d_result, result, n * sizeof(float), cudaMemcpyDeviceToHost);
+    err = cudaMemcpy(result, d_result, n * sizeof(float), cudaMemcpyDeviceToHost);
     if (err != cudaSuccess) {
         printf("Failed to copy data from device to host for d_result: %s\n", cudaGetErrorString(err));
         exit(EXIT_FAILURE);
