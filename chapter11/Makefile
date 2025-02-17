@@ -1,5 +1,6 @@
 CC = nvcc
 CFLAGS = -O3 -arch=sm_75
+TARGET = main
 
 all: $(TARGET)
 
